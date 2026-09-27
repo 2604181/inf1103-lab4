@@ -54,13 +54,18 @@ def load_inventory():
         
         return inventory, transaction_history
 
+def save_inventory(inventory, transaction_history):
+    with open(INVENTORY_FILE, "w") as file:
+        file.write(f"{inventory}\n")
+        history_strings = [str(x) for x in transaction_history]
+        file.write(",".join(history_strings))
 
 def main():
     """
     Main function to run inventory auditor program.
     """
     # local variables
-    inventory = 0
+    inventory, transaction_history = load_inventory()
     tax_amount = 0
     exit_program = False
     failed = 0
@@ -87,6 +92,7 @@ def main():
                 )
                 exit_program = True
 
+    save_inventory(inventory, transaction_history)
     generate_report(inventory, failed)
 
 
