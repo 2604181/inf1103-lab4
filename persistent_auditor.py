@@ -1,5 +1,12 @@
+"""
+INF1103 Week 4 - Persistent Auditor
+"""
+import os
+
+# Global Constants
 MAX_INVENTORY = 500
 TAX_RATE = 0.1  # 10% tax rate
+INVENTORY_FILE = "inventory.txt"
 
 def get_valid_input():
     user_input = input("Enter stock quantity (or 'quit' to quit): ")
@@ -31,6 +38,22 @@ def generate_report(total_units, failed_entries):
     print("\n---- Inventory Audit Summary ----")
     print(f"Total Units Processed: {total_units}")
     print(f"Number of Failed/Rejected Entries: {failed_entries}")
+
+def load_inventory():
+    if not os.path.exists(INVENTORY_FILE):
+        return 0, []
+    
+    with open(INVENTORY_FILE, "r") as file:
+        lines = file.readlines()
+        inventory = int(lines[0].strip())
+        
+        if lines[1].strip() == "":
+            transaction_history = []
+        else:
+            transaction_history = [int(x) for x in lines[1].strip().split(",")]
+        
+        return inventory, transaction_history
+
 
 def main():
     """
