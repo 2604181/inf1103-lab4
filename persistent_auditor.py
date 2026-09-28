@@ -47,7 +47,7 @@ def load_inventory():
         lines = file.readlines()
         inventory = int(lines[0].strip())
         
-        if lines[1].strip() == "":
+        if len(lines) < 2 or lines[1].strip() == "":
             transaction_history = []
         else:
             transaction_history = [int(x) for x in lines[1].strip().split(",")]
@@ -81,6 +81,7 @@ def main():
 
         else:
             inventory = process_delivery(inventory, user_input)
+            transaction_history.append(user_input)
             tax_amount = calculate_tax(user_input)
             print(
                 f"Processed {user_input} units. Current inventory: {inventory}. Tax amount: {tax_amount:.2f}"
